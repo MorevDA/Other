@@ -60,6 +60,9 @@ class FakeEmail:
             self.write_file(f"{path + file_name}", response.content)
         elif file_name:
             self.write_file(file_name, response.content)
+        elif path:
+            default_file_name = self.get_attachment_metadata(email_id, attachment_id).name
+            self.write_file(f'{path + default_file_name}', response.content)
         else:
             default_file_name = self.get_attachment_metadata(email_id, attachment_id).name
             self.write_file(default_file_name, response.content)
