@@ -68,19 +68,24 @@ class FakeEmail:
 
     def download_attachment(self, email_id, attachment_id: str,
                             path: str = None, file_name: str = None) -> None:
-        """Функция для сохранения приложения по его id к электронному письму"""
+        """Функция для сохранения приложения к электронному письму по id приложения"""
         response = self.session.get(f'{self.base_url}/emails/{email_id}/attachments/{attachment_id}',
                                     headers=self.headers)
         if path and file_name:
-            self.write_file(f"{path + file_name}", response.content)
+            self.write_file(f"{path}/{file_name}", response.content)
         elif file_name:
             self.write_file(file_name, response.content)
         elif path:
             default_file_name = self.get_attachment_metadata(email_id, attachment_id).name
-            self.write_file(f'{path + default_file_name}', response.content)
+            self.write_file(f'{path}/{default_file_name}', response.content)
         else:
             default_file_name = self.get_attachment_metadata(email_id, attachment_id).name
             self.write_file(default_file_name, response.content)
+
+    def download_all_attachments_in_email(self, email_id, path=None):
+        """Функция для сохранения всех приложений к электронному письму по его id"""
+        for attachment_id in self.get_email_by_id(email_id).attachment_id:
+            self.download_attachment(email_id, attachment_id, path)
 
     def get_attachment_metadata(self, email_id: str, attachment_id: str):
         """Функция для получения информации к электронному письму по его id"""
