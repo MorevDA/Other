@@ -1,7 +1,7 @@
 import requests
 import re
 from dataclasses import dataclass
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 __all__ = (
     'FakeEmail',
@@ -13,6 +13,7 @@ class FakeEmail:
 
     base_url = "https://api.mailslurp.com"
     """Базовый адрес для взаимодействия с API"""
+
     def __init__(self, apy_key, address=None):
         """Создание нового случайного адреса электронной почты.
            :param apy_key: Ключ полученный при регистрации на сервисе mailslurp.com
@@ -87,16 +88,27 @@ class FakeEmail:
         for attachment_id in self.get_email_by_id(email_id).attachment_id:
             self.download_attachment(email_id, attachment_id, path)
 
-    def get_attachment_metadata(self, email_id: str, attachment_id: str):
+    def get_attachment_metadata(self, email_id: str, attachment_id: str) -> 'FakeEmail.Attachment':
         """Функция для получения информации к электронному письму по его id"""
         response = self.session.get(f'{self.base_url}/emails/{email_id}/attachments/{attachment_id}/metadata',
                                     headers=self.headers)
         return FakeEmail.Attachment.from_dict(response.json())
 
+    def wait_for_email(self, timeout: Optional[int] = 60) -> 'FakeEmail.MessageInfo':
+        """Метод ожидания поступления новых писем в почтовый ящик"""
+        wait_time = timeout * 1000
+        response_body = {'inboxId': self.inbox_id, 'timeout': wait_time, 'unreadOnly': True}
+        response = self.session.get(f'{self.base_url}/waitForLatestEmail',
+                                    headers=self.headers, params=response_body)
+        if response:
+            return FakeEmail.MessageInfo.from_dict(self, response.json())
+        else:
+            raise TimeoutError('Timed out waiting for message')
+
     @staticmethod
     def get_link_in_text(text: str) -> list:
         """Функция для получения списка ссылок содержащегося в тексте"""
-        link = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',  text)
+        link = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', text)
         return link
 
     @staticmethod
