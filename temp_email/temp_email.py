@@ -94,6 +94,12 @@ class FakeEmail:
                                     headers=self.headers)
         return FakeEmail.Attachment.from_dict(response.json())
 
+    def reply_to_email(self, email_id: str, email_body: str) -> None:
+        response_body = {'body': email_body, 'isHTML': True}
+        response = self.session.put(f'{self.base_url}/emails/{email_id}',
+                             headers=self.headers, params=response_body)
+        return response.content
+
     def wait_for_email(self, timeout: Optional[int] = 60) -> 'FakeEmail.MessageInfo':
         """Метод ожидания поступления новых писем в почтовый ящик"""
         wait_time = timeout * 1000
