@@ -1,3 +1,5 @@
+import json
+
 import requests
 import re
 from dataclasses import dataclass
@@ -97,7 +99,7 @@ class FakeEmail:
     def reply_to_email(self, email_id: str, email_body: str) -> None:
         response_body = {'body': email_body, 'isHTML': True}
         response = self.session.put(f'{self.base_url}/emails/{email_id}',
-                             headers=self.headers, params=response_body)
+                                    headers=self.headers, json=response_body)
         return response.content
 
     def wait_for_email(self, timeout: Optional[int] = 60) -> 'FakeEmail.MessageInfo':
