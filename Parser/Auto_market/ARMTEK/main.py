@@ -1,10 +1,9 @@
 import requests
-from pprint import pprint
-import json
+
 
 from get_token import get_token
-
 from armtek_config import Armtek_Config
+from parse_armtek import get_parts_list
 
 session = requests.Session()
 
@@ -25,17 +24,13 @@ def get_search_info(sess, config) -> dict:
     return search_info
 
 
-# Armtek_Config
-
-
-def get_original_parts_info(sess, config):
-    content = sess.post(config.final_search_url,
-                        headers=config.headers_search,
-                        json=config.final_search_data).json()
+def get_original_parts_info(sess, config) -> list:
+    """Функция для получения списка предложений оригинальных деталей"""
+    content_data = sess.post(config.final_search_url,
+                             headers=config.headers_search,
+                             json=config.final_search_data).json()
     try:
-        with open('armtek_proba', 'w', encoding='utf-8') as file:
-            json.dump(content, file)
-        print('mission compliant')
+        return get_parts_list(content_data)
     except:
         print('Ooops')
 
@@ -44,6 +39,5 @@ if __name__ == '__main__':
     search_params = get_search_info(session, Armtek_Config)
     Armtek_Config.final_search_data['artId'] = search_params['artId']
     Armtek_Config.final_search_data['keyzaks'] = search_params['keyzaks']
-    get_original_parts_info(session, Armtek_Config)
-    # print(Armtek_Config)
+    print(get_original_parts_info(session, Armtek_Config))
 
