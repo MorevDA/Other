@@ -11,6 +11,7 @@ class Config:
     get_token_url: str
     final_search_url: str
     preliminary_search_url: str
+    analog_url: str
 
 
 Armtek_Config = Config(
@@ -74,4 +75,5 @@ Armtek_Config = Config(
         ], },
     'https://restapi.armtek.ru/rest/ru/auth-microservice/v1/guest',
     'https://restapi.armtek.ru/rest/ru/search-microservice/v1/search/all-suggestions',
-    'https://restapi.armtek.ru/rest/ru/search-microservice/v1/search')
+    'https://restapi.armtek.ru/rest/ru/search-microservice/v1/search',
+    'https://restapi.armtek.ru/rest/ru/search-microservice/v1/search/by-related')
