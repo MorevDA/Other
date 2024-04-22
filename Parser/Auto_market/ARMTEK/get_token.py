@@ -4,3 +4,4 @@ def get_token(ses, config) -> str:
     token_data = response_result.json()['data']['accessToken']
     authorization_token = f'Bearer {token_data}'
     return authorization_token
+
