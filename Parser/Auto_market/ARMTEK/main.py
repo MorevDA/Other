@@ -1,13 +1,10 @@
 import requests
 
 
-from get_token import get_token
 from armtek_config import Armtek_Config
-from parse_armtek import get_parts_list
+from parse_original import get_parts_list
 
 session = requests.Session()
-
-Armtek_Config.headers_search['authorization'] = get_token(session, Armtek_Config)
 
 
 def get_search_info(sess, config) -> dict:
