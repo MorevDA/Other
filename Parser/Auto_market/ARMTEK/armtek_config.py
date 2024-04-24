@@ -10,6 +10,7 @@ class Config:
     headers_search: dict
     preliminary_search_data: dict
     final_search_data: dict
+    related_parts_search_data: dict
     get_token_url: str
     final_search_url: str
     preliminary_search_url: str
@@ -34,7 +35,8 @@ Armtek_Config = Config(
                   'sec-fetch-dest': 'empty',
                   'sec-fetch-mode': 'cors',
                   'sec-fetch-site': 'same-site',
-                  'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
+                  'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                                'Chrome/123.0.0.0 Safari/537.36',
                   'x-auth-system': 'AUTH_MICROSERVICE_V1_ARMTEK_RU',
                   'x-auth-token': 'nJhNK87gJOOU6dfr',
                   'x-ca-vkorg': '4000',
@@ -82,10 +84,19 @@ Armtek_Config = Config(
             '0000008403',
             '0000026371',
         ], },
+    related_parts_search_data={
+        'query': 'VZ',
+        'artId': 49207054,
+        'page': 1,
+        'cacheKey': '',
+        'userInfo': {
+            'VKORG': '4000',
+            'VSTELS_LIST': [
+                'ME86',
+            ],
+        },
+        'isServer': False},
     get_token_url='https://restapi.armtek.ru/rest/ru/auth-microservice/v1/guest',
     final_search_url='https://restapi.armtek.ru/rest/ru/search-microservice/v1/search/all-suggestions',
     preliminary_search_url='https://restapi.armtek.ru/rest/ru/search-microservice/v1/search',
     analog_url='https://restapi.armtek.ru/rest/ru/search-microservice/v1/search/by-related')
-
-
-
