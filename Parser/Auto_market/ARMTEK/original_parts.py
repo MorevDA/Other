@@ -6,7 +6,6 @@ def get_search_info(sess, config, shop, part, suggestion) -> None:
      от API Armtek"""
     content = sess.post(config.preliminary_search_url,
                         headers=config.headers_search,
-
                         json=config.preliminary_search_data).json()
     parts_info = content["data"]
     parts_data = parts_info['articlesData'][0]
@@ -39,6 +38,6 @@ if __name__ == '__main__':
     Arm: Shop = Shop("armtek")
 
     get_search_info(session, Armtek_Config, Arm, Part, Suggestion)
-    get_original_parts_info(session, Armtek_Config, Arm, Suggestion)
+    get_related_parts_info(session, Armtek_Config, Arm, Suggestion)
 
     pprint(Arm)
