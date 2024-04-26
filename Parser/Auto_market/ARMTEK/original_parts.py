@@ -1,4 +1,4 @@
-from service import get_current_time
+from service import get_suggestion_list
 
 
 def get_search_info(sess, config, shop, part, suggestion) -> None:
@@ -15,20 +15,16 @@ def get_search_info(sess, config, shop, part, suggestion) -> None:
     config.final_search_data['keyzaks'] = [i['KEYZAK'] for i in suggestions]
     config.final_search_data['artId'] = art_id
     shop.original_parts = part(parts_data['BRAND'], parts_data['PIN'], parts_data['NAME'], art_id)
-    parts_list = []
-    for i in suggestions:
-        parts_list.append(suggestion(float(i['PRICES1']), i['RVALUE'], get_current_time(i['DLVDT']),
-                                     get_current_time(i['WRNTDT'])))
+    parts_list = get_suggestion_list(suggestion, suggestions)
     shop.original_parts.suggestions = parts_list
 
 
-def get_original_parts_info(sess, config, shop, suggestions) -> None:
+def get_related_parts_info(sess, config, shop, suggestion) -> None:
     """Функция для получения списка предложений оригинальных деталей"""
     content_data = sess.post(config.final_search_url,
                              headers=config.headers_search,
                              json=config.final_search_data).json()['data']
-    parts_list = [suggestions(float(i['PRICES1']), i['RVALUE'], get_current_time(i['DLVDT']),
-                              get_current_time(i['WRNTDT'])) for i in content_data]
+    parts_list = get_suggestion_list(suggestion, content_data)
     shop.original_parts.suggestions.extend(parts_list)
 
 
