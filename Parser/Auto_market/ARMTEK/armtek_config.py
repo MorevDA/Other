@@ -85,17 +85,23 @@ Armtek_Config = Config(
             '0000026371',
         ], },
     related_parts_search_data={
-        'query': 'VZ',
-        'artId': 49207054,
+        'query': '1003AU134',
+        'queryType': 1,
         'page': 1,
-        'cacheKey': '',
+        'artId': 49207054,
+        'typeView': 'list',
+        'filters': {
+            'text': '1003AU134',
+            'artId': 49207054,
+        },
         'userInfo': {
             'VKORG': '4000',
             'VSTELS_LIST': [
-                'ME86',
+                'PE90',
             ],
         },
-        'isServer': False},
+        'ZZSIGN': 'S', }
+    ,
     get_token_url='https://restapi.armtek.ru/rest/ru/auth-microservice/v1/guest',
     final_search_url='https://restapi.armtek.ru/rest/ru/search-microservice/v1/search/all-suggestions',
     preliminary_search_url='https://restapi.armtek.ru/rest/ru/search-microservice/v1/search',
