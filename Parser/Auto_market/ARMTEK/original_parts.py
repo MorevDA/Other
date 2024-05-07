@@ -1,4 +1,5 @@
 from service import get_suggestion_list, get_content
+from copy import deepcopy
 
 
 def get_search_info(sess, config, shop, part, suggestion) -> None:
@@ -17,6 +18,9 @@ def get_search_info(sess, config, shop, part, suggestion) -> None:
 
 def get_related_parts_info(sess, config, shop, suggestion) -> None:
     """Функция для получения списка предложений оригинальных деталей"""
+    final_data = deepcopy(config.final_search_data)
+    final_data['artId'] = shop.original_parts.artid
+    final_data['keyzaks'] = shop.original_parts.keyzaks
     content_data = get_content(sess, config.final_search_url, config.headers_search,
                                config.final_search_data)['data']
     parts_list = get_suggestion_list(suggestion, content_data)
