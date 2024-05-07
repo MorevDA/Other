@@ -9,9 +9,7 @@ def get_search_info(sess, config, shop, part, suggestion) -> None:
     parts_data = content["data"]['articlesData'][0]
     suggestions = parts_data['SUGGESTIONS']
     art_id = list(set(i['ARTID'] for i in suggestions))[0]
-    config.final_search_data['artId'] = art_id
     keyzaks = [i['KEYZAK'] for i in suggestions]
-    config.final_search_data['keyzaks'] = keyzaks
     shop.original_parts = part(parts_data['BRAND'], parts_data['PIN'], parts_data['NAME'], art_id, keyzaks=keyzaks)
     parts_list = get_suggestion_list(suggestion, suggestions)
     shop.original_parts.suggestions = parts_list
