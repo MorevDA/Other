@@ -3,17 +3,14 @@ from copy import deepcopy
 
 
 def get_search_info(sess, config, shop, part, suggestion) -> None:
-    """Функция для получения характеристик поиска и характеристик оригинальной детали
-     от API Armtek"""
-    content = get_content(sess, config.preliminary_search_url,config.headers_search,
+    """Функция для получения от API Armtek основных параметров для поиска"""
+    content = get_content(sess, config.preliminary_search_url, config.headers_search,
                           config.preliminary_search_data)
     parts_data = content["data"]['articlesData'][0]
     suggestions = parts_data['SUGGESTIONS']
-    art_id = list(set(i['ARTID'] for i in suggestions))[0]
+    art_id = parts_data['ARTID']
     keyzaks = [i['KEYZAK'] for i in suggestions]
     shop.original_parts = part(parts_data['BRAND'], parts_data['PIN'], parts_data['NAME'], art_id, keyzaks=keyzaks)
-    parts_list = get_suggestion_list(suggestion, suggestions)
-    shop.original_parts.suggestions = parts_list
 
 
 def get_related_parts_info(sess, config, shop, suggestion) -> None:
