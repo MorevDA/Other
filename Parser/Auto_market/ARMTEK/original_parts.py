@@ -4,13 +4,13 @@ from copy import deepcopy
 
 def get_search_info(sess, config, shop, part, suggestion) -> None:
     """Функция для получения от API Armtek с основными предложениями по парт-номеру
-    детали, а также внутреннего актикула Armtek для дальнейшего поиска деталей с таким
+    детали, а также внутреннего артикула Armtek для дальнейшего поиска деталей с таким
     же парт-номером и аналогов"""
     content = get_content(sess, config.preliminary_search_url, config.headers_search,
                           config.preliminary_search_data)
     parts_data = content["data"]['articlesData'][0]
-    # suggestions = parts_data['SUGGESTIONS']
     art_id = parts_data['ARTID']
+    config.related_parts_search_data['filters']['artId'] = art_id
     shop.original_parts = part(parts_data['BRAND'], parts_data['PIN'], parts_data['NAME'], art_id)
 
 
@@ -24,7 +24,8 @@ def get_related_parts_info(sess, config, shop, suggestion) -> None:
     shop.original_parts.suggestions.extend(parts_list)
 
 
-def get_original_parts(sess, config, shop, part, suggestion ):
+def get_original_parts(sess, config, shop, part, suggestion):
+    """Функция для формирования полных данных о запрашиваемом парт-номере"""
     get_search_info(sess, config, shop, part, suggestion)
     get_related_parts_info(sess, config, shop, suggestion)
 
