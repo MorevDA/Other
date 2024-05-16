@@ -75,15 +75,11 @@ Armtek_Config = Config(
         'userInfo': {
             'VKORG': '4000',
             'VSTELS_LIST': [
-                'ME86',
+                'PE90',
             ],
         },
         'limitSuggestions': False,
-        'keyzaks': [
-            '0000002966',
-            '0000008403',
-            '0000026371',
-        ], },
+         },
     related_parts_search_data={
         'query': '1003AU134',
         'queryType': 1,
